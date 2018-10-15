@@ -20,20 +20,20 @@ public class Ad implements Serializable {
         this.adId = adId;
     }
 
-    public String getAdImageUrl() {
-        return adImageUrl;
+    public String getAdImageResource() {
+        return adImageResource;
     }
 
-    public void setAdImageUrl(String adImageUrl) {
-        this.adImageUrl = adImageUrl;
+    public void setAdImageResource(String adImageResource) {
+        this.adImageResource = adImageResource;
     }
 
     private String url;
     private String adId;
-    private String adImageUrl;
+    private String adImageResource;
 
     @Override
     public String toString() {
-        return adId + ", " + adImageUrl;
+        return adId + ", " + adImageResource;
     }
 }
