@@ -3,10 +3,11 @@ package com.hashads.hashads;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import javax.ws.rs.core.Response;
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
+import java.io.*;
+
+import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -72,28 +73,50 @@ public class AdProducer {
         {
             if (ad.getAdId().equals(id))
             {
-                return getImage(ad.getAdImageResource());
+                return getImage(ad.getAdImageResource(), false);
+            }
+        }
+        return null;
+    }
+
+    public Response getImageBase64ByAdId(String id) throws IOException
+    {
+        for (Ad ad : ads)
+        {
+            if (ad.getAdId().equals(id))
+            {
+                return getImage(ad.getAdImageResource(), true);
             }
         }
         return null;
     }
 
 
-    public Response getImage(String imgResource) throws IOException {
-        System.out.println("getImage() - imgResource: " + imgResource);
 
-        ClassLoader classLoader = getClass().getClassLoader();
-        URL url = classLoader.getResource(imgResource);
-        System.out.println("URL: " + url);
-        File file = new File(url.getFile());
-        String mediaType = "image/png";
 
-        Response.ResponseBuilder response = Response.ok((Object) file);
-        return Response.ok(file,mediaType).build();
-        //response.header("Content-Disposition", "attachment; filename=test.png");
-        //return response.build();
+
+    public Response getImage(String imgResource, boolean base64) throws IOException  {
+//        String path = "/Volumes/Development/hashads/target/classes/adimgs/meltdown.png";
+        File file = new File(imgResource);
+
+        try {
+            byte[] fileContent = Files.readAllBytes(file.toPath());
+            byte[] encodedBytes = base64 ? Base64.getEncoder().encode(fileContent) : fileContent;
+            Response.ResponseBuilder responseBuilder = Response.ok(encodedBytes, "image/png");
+            responseBuilder.header("Content-Disposition", "attachment; filename=\"MyImageFile.png\"");
+            return responseBuilder.build();
+
+        }
+        catch (Exception e)
+        {
+            System.err.println(e);
+            e.printStackTrace();
+        }
+        return null;
 
     }
+
+
 
 
 
