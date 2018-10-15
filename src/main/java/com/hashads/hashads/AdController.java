@@ -31,7 +31,7 @@ public class AdController {
     @GET
     @RequestMapping("ad")
     @Produces(MediaType.APPLICATION_JSON)
-    public Ad getAd()
+    public Ad getAd() throws IOException
     {
         return adProducer.getAd();
     }

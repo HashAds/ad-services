@@ -2,7 +2,10 @@ package com.hashads.hashads;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+
+import javax.imageio.ImageIO;
 import javax.ws.rs.core.Response;
+import java.awt.image.BufferedImage;
 import java.io.*;
 
 import java.nio.file.Files;
@@ -46,7 +49,7 @@ public class AdProducer {
         System.out.println("Ads initialized: " + ads);
     }
 
-    public Ad getAd()
+    public Ad getAd() throws IOException
     {
         index.incrementAndGet();
         int i = (index.get()+1/ads.size()) % ads.size();
@@ -54,7 +57,7 @@ public class AdProducer {
         return getAdById(Integer.toString(i));
     }
 
-    private Ad getAdById(String id)
+    private Ad getAdById(String id) throws IOException
     {
         String url = env.getProperty(id + ".url");
         if (url==null) throw new RuntimeException();
@@ -64,6 +67,7 @@ public class AdProducer {
         ad.setAdId(id);
         ad.setUrl(url);
         ad.setAdImageResource(imageResource);
+        ad.setImg(new String(getImageBytesBase64(imageResource)));
         return ad;
     }
 
@@ -93,6 +97,25 @@ public class AdProducer {
 
 
 
+    public byte[] getImageBytesBase64(String imgResource) throws IOException  {
+//        String path = "/Volumes/Development/hashads/target/classes/adimgs/meltdown.png";
+
+
+        File file = new File(imgResource);
+
+        try {
+            byte[] fileContent = Files.readAllBytes(file.toPath());
+            byte[] encodedBytes = Base64.getEncoder().encode(fileContent);
+            return encodedBytes;
+        }
+        catch (Exception e)
+        {
+            System.err.println(e);
+            e.printStackTrace();
+        }
+        return null;
+
+    }
 
 
     public Response getImage(String imgResource, boolean base64) throws IOException  {
@@ -116,8 +139,19 @@ public class AdProducer {
 
     }
 
-
-
+//
+//    public Response getImage(String imgResource, boolean base64) throws IOException  {
+//        File file = new File(imgResource);
+//        BufferedImage image = ImageIO.read(file);
+//        //ImageIO.write(image, "PNG", resp.getOutputStream());
+//
+//        return Response.ok(image, "image/png").build();
+//
+////        Response.ResponseBuilder responseBuilder = Response.ok(image, "image/png");
+////        responseBuilder.header("Content-Disposition", "attachment; filename=\"MyImageFile.png\"");
+////        return responseBuilder.build();
+//
+//    }
 
 
 }
