@@ -1,8 +1,9 @@
-package com.hashads.hashads;
+package com.hedera.utilities;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Properties;
 
 import org.slf4j.Logger;
@@ -23,10 +24,10 @@ public class ExampleUtilities {
 	public static long nodeAccountShard = 0;
 	public static long nodeAccountRealm = 0;
 	public static long nodeAccountNum = 0;
-	
+
 	public static String pubKey = "";
 	public static String privKey = "";
-	
+
 	public static long payAccountShard = 0;
 	public static long payAccountRealm = 0;
 	public static long payAccountNum = 0;
@@ -36,7 +37,7 @@ public class ExampleUtilities {
 		// load application properties
 		Properties applicationProperties = new Properties();
 		InputStream propertiesInputStream = null;
-			
+
 		try {
 
 			propertiesInputStream = new FileInputStream("node.properties");
@@ -51,10 +52,10 @@ public class ExampleUtilities {
 			nodeAccountShard = Long.parseLong(applicationProperties.getProperty("nodeAccountShard"));
 			nodeAccountRealm = Long.parseLong(applicationProperties.getProperty("nodeAccountRealm"));
 			nodeAccountNum = Long.parseLong(applicationProperties.getProperty("nodeAccountNum"));
-			
+
 			pubKey = applicationProperties.getProperty("pubkey");
 			privKey = applicationProperties.getProperty("privkey");
-			
+
 			payAccountShard = Long.parseLong(applicationProperties.getProperty("payingAccountShard"));
 			payAccountRealm = Long.parseLong(applicationProperties.getProperty("payingAccountRealm"));
 			payAccountNum = Long.parseLong(applicationProperties.getProperty("payingAccountNum"));
@@ -72,32 +73,32 @@ public class ExampleUtilities {
 			}
 		}
 	}
-	
-	public static HederaTransactionAndQueryDefaults getTxQueryDefaults() {
+
+	public static HederaTransactionAndQueryDefaults getTxQueryDefaults() throws InvalidKeySpecException {
 		// Get node details 
 		ExampleUtilities.getNodeDetails();
-		
+
 		// setup node account ID
 		HederaAccountID nodeAccountID = new HederaAccountID(ExampleUtilities.nodeAccountShard, ExampleUtilities.nodeAccountRealm, ExampleUtilities.nodeAccountNum);
 		// setup node
 		HederaNode node = new HederaNode(ExampleUtilities.nodeAddress, ExampleUtilities.nodePort, nodeAccountID);
-		
+
 		// setup paying account
 		HederaAccountID payingAccountID = new HederaAccountID(ExampleUtilities.payAccountShard, ExampleUtilities.payAccountRealm, ExampleUtilities.payAccountNum);
-		
+
 		// setup paying keypair
 		HederaCryptoKeyPair payingKeyPair = new HederaCryptoKeyPair(KeyType.ED25519, ExampleUtilities.pubKey, ExampleUtilities.privKey);
-		
+
 		// setup a set of defaults for query and transactions
 		HederaTransactionAndQueryDefaults txQueryDefaults = new HederaTransactionAndQueryDefaults();
-		
+
 		txQueryDefaults.memo = "Demo memo";
 		txQueryDefaults.node = node;
 		txQueryDefaults.payingAccountID = payingAccountID;
 		txQueryDefaults.payingKeyPair = payingKeyPair;
 		txQueryDefaults.transactionValidDuration = new HederaDuration(120, 0);
-		
+
 		return txQueryDefaults;
 	}
-	
+
 }
