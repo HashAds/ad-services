@@ -1,5 +1,7 @@
 package com.hashads.hashads;
 
+import com.hedera.sdk.account.HederaAccount;
+import com.hedera.sdk.common.HederaAccountID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -22,12 +25,6 @@ public class AdController {
     @Autowired
     private AdProducer adProducer;
 
-    @RequestMapping("test")
-    public String test() {
-        log.info("Test");
-        return "OK";
-    }
-
     @GET
     @RequestMapping("ad")
     @Produces(MediaType.APPLICATION_JSON)
@@ -36,23 +33,17 @@ public class AdController {
         return adProducer.getAd();
     }
 
-
-    @RequestMapping("adImage/{adId}")
-    @Produces("image/png")
-    public Response getImage(@PathVariable("adId") String adId) throws IOException
-    {
-        return adProducer.getImageByAdId(adId);
-    }
-
-
-    @RequestMapping("adImageBase64/{adId}")
-    @Produces("image/png")
-    public Response getImageBase64(@PathVariable("adId") String adId) throws IOException
+    @POST
+    @RequestMapping("trackView/{adId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response trackView(@PathVariable("adId") String adId) throws Exception
     {
 
-        return adProducer.getImageBase64ByAdId(adId);
+        HederaAccount a = new HederaAccount();
+        HederaAccountID id = new HederaAccountID();
+        a.send(id, 3);
+
+        return Response.ok().build();
     }
-
-
 
 }

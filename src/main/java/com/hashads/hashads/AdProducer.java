@@ -3,14 +3,9 @@ package com.hashads.hashads;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
-import javax.imageio.ImageIO;
-import javax.ws.rs.core.Response;
-import java.awt.image.BufferedImage;
 import java.io.*;
 
-import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -53,14 +48,14 @@ public class AdProducer {
     {
         index.incrementAndGet();
         int i = (index.get()+1/ads.size()) % ads.size();
-        //i-=1;
         return getAdById(Integer.toString(i));
     }
 
-    private Ad getAdById(String id) throws IOException
+    private Ad getAdById(String id)
     {
         String url = env.getProperty(id + ".url");
         String imgUrl = env.getProperty(id + ".imgUrl");
+        String hostAccount = env.getProperty(id + ".hostAccount");
         if (url==null) throw new RuntimeException();
         String imageResource = env.getProperty(id + ".adImageResource");
         System.out.println("url: " + url + " res: " + imageResource);
@@ -69,91 +64,7 @@ public class AdProducer {
         ad.setUrl(url);
         ad.setImgUrl(imgUrl);
         ad.setAdImageResource(imageResource);
-//        ad.setImg(new String(getImageBytesBase64(imageResource)));
+        ad.setHostAccount(hostAccount);
         return ad;
     }
-
-    public Response getImageByAdId(String id) throws IOException
-    {
-        for (Ad ad : ads)
-        {
-            if (ad.getAdId().equals(id))
-            {
-                return getImage(ad.getAdImageResource(), false);
-            }
-        }
-        return null;
-    }
-
-    public Response getImageBase64ByAdId(String id) throws IOException
-    {
-        for (Ad ad : ads)
-        {
-            if (ad.getAdId().equals(id))
-            {
-                return getImage(ad.getAdImageResource(), true);
-            }
-        }
-        return null;
-    }
-
-
-
-    public byte[] getImageBytesBase64(String imgResource) throws IOException  {
-//        String path = "/Volumes/Development/hashads/target/classes/adimgs/meltdown.png";
-
-
-        File file = new File(imgResource);
-
-        try {
-            byte[] fileContent = Files.readAllBytes(file.toPath());
-            byte[] encodedBytes = Base64.getEncoder().encode(fileContent);
-            return encodedBytes;
-        }
-        catch (Exception e)
-        {
-            System.err.println(e);
-            e.printStackTrace();
-        }
-        return null;
-
-    }
-
-
-    public Response getImage(String imgResource, boolean base64) throws IOException  {
-//        String path = "/Volumes/Development/hashads/target/classes/adimgs/meltdown.png";
-        File file = new File(imgResource);
-
-        try {
-            byte[] fileContent = Files.readAllBytes(file.toPath());
-            byte[] encodedBytes = base64 ? Base64.getEncoder().encode(fileContent) : fileContent;
-            Response.ResponseBuilder responseBuilder = Response.ok(encodedBytes, "image/png");
-            responseBuilder.header("Content-Disposition", "attachment; filename=\"MyImageFile.png\"");
-            return responseBuilder.build();
-
-        }
-        catch (Exception e)
-        {
-            System.err.println(e);
-            e.printStackTrace();
-        }
-        return null;
-
-    }
-
-//
-//    public Response getImage(String imgResource, boolean base64) throws IOException  {
-//        File file = new File(imgResource);
-//        BufferedImage image = ImageIO.read(file);
-//        //ImageIO.write(image, "PNG", resp.getOutputStream());
-//
-//        return Response.ok(image, "image/png").build();
-//
-////        Response.ResponseBuilder responseBuilder = Response.ok(image, "image/png");
-////        responseBuilder.header("Content-Disposition", "attachment; filename=\"MyImageFile.png\"");
-////        return responseBuilder.build();
-//
-//    }
-
-
 }

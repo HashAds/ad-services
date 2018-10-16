@@ -3,6 +3,11 @@ package com.hashads.hashads;
 import java.io.Serializable;
 
 public class Ad implements Serializable {
+    private String url;
+    private String adId;
+    private String adImageResource;
+    private String hostAccount;
+
 
     public String getUrl() {
         return url;
@@ -28,9 +33,13 @@ public class Ad implements Serializable {
         this.adImageResource = adImageResource;
     }
 
-    private String url;
-    private String adId;
-    private String adImageResource;
+    public String getHostAccount() {
+        return hostAccount;
+    }
+
+    public void setHostAccount(String hostAccount) {
+        this.hostAccount = hostAccount;
+    }
 
     public String getImgUrl() {
         return imgUrl;

@@ -1,4 +1,7 @@
 /target/
+/**/.DS_Store
+.mvn
+/logs/
 !.mvn/wrapper/maven-wrapper.jar
 
 ### STS ###
