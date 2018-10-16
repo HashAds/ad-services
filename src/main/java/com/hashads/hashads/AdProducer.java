@@ -60,14 +60,16 @@ public class AdProducer {
     private Ad getAdById(String id) throws IOException
     {
         String url = env.getProperty(id + ".url");
+        String imgUrl = env.getProperty(id + ".imgUrl");
         if (url==null) throw new RuntimeException();
         String imageResource = env.getProperty(id + ".adImageResource");
         System.out.println("url: " + url + " res: " + imageResource);
         Ad ad = new Ad();
         ad.setAdId(id);
         ad.setUrl(url);
+        ad.setImgUrl(imgUrl);
         ad.setAdImageResource(imageResource);
-        ad.setImg(new String(getImageBytesBase64(imageResource)));
+//        ad.setImg(new String(getImageBytesBase64(imageResource)));
         return ad;
     }
 

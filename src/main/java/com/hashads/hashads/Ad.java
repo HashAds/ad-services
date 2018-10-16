@@ -32,6 +32,16 @@ public class Ad implements Serializable {
     private String adId;
     private String adImageResource;
 
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+
+    private String imgUrl;
+
     public String getImg() {
         return img;
     }
