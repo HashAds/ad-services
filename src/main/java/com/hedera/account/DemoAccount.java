@@ -1,7 +1,5 @@
 package com.hedera.account;
 
-import java.io.UnsupportedEncodingException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +12,6 @@ import com.hedera.sdk.common.HederaTransactionAndQueryDefaults;
 import com.hedera.sdk.common.HederaTransactionID;
 import com.hedera.sdk.common.HederaTransactionRecord;
 import com.hedera.sdk.cryptography.HederaCryptoKeyPair;
-import com.hedera.utilities.ExampleUtilities;
 
 public final class DemoAccount {
 

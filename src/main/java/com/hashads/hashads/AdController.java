@@ -1,5 +1,6 @@
 package com.hashads.hashads;
 
+import com.hedera.account.DemoAccount;
 import com.hedera.sdk.account.HederaAccount;
 import com.hedera.sdk.common.HederaAccountID;
 import org.slf4j.Logger;
@@ -42,7 +43,7 @@ public class AdController {
 //        HederaAccount a = new HederaAccount();
 //        HederaAccountID id = new HederaAccountID();
 //        a.send(id, 3);
-
+        DemoAccount.main();
         return Response.ok().build();
     }
 

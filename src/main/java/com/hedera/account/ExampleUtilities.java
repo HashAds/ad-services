@@ -1,4 +1,4 @@
-package com.hedera.utilities;
+package com.hedera.account;
 
 import java.io.FileInputStream;
 import java.io.IOException;
