@@ -14,15 +14,31 @@ public class AdProducer {
 
     private List<Ad> ads;
     private AtomicInteger index;
+    private int adRate;
 
     private Environment env;
 
     public AdProducer(Environment env)
     {
         this.env = env;
+        String adRateString = env.getProperty("adRate");
+        try
+        {
+            this.adRate = Integer.parseInt(adRateString);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            adRate = 1;
+        }
         ads = new ArrayList<Ad>();
         index = new AtomicInteger(0);
         initAds();
+    }
+
+    public int getAdRate()
+    {
+        return adRate;
     }
 
     private void initAds()
@@ -51,7 +67,7 @@ public class AdProducer {
         return getAdById(Integer.toString(i));
     }
 
-    private Ad getAdById(String id)
+    public Ad getAdById(String id)
     {
         String url = env.getProperty(id + ".url");
         String imgUrl = env.getProperty(id + ".imgUrl");

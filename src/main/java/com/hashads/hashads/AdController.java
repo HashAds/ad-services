@@ -35,15 +35,14 @@ public class AdController {
     }
 
     @POST
-    @RequestMapping("trackView/{adId}")
+    @RequestMapping("trackView/{adId}/{viewerAccount}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response trackView(@PathVariable("adId") String adId) throws Exception
+    public Response trackView(@PathVariable("adId") String adId, @PathVariable("viewerAccount") String viewerAccount) throws Exception
     {
-
-//        HederaAccount a = new HederaAccount();
-//        HederaAccountID id = new HederaAccountID();
-//        a.send(id, 3);
-        DemoAccount.main();
+        Ad ad = adProducer.getAdById(adId);
+        int adRate = adProducer.getAdRate();
+        String hostAccount = ad.getHostAccount();
+        DemoAccount.main(); //TODO: pay adRate amount to hostAccount and viewerAccount addresses.
         return Response.ok().build();
     }
 
