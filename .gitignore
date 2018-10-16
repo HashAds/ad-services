@@ -3,6 +3,7 @@
 .mvn
 /logs/
 !.mvn/wrapper/maven-wrapper.jar
+node.properties
 
 ### STS ###
 .apt_generated
