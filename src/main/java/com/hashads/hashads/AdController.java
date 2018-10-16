@@ -39,9 +39,9 @@ public class AdController {
     public Response trackView(@PathVariable("adId") String adId) throws Exception
     {
 
-        HederaAccount a = new HederaAccount();
-        HederaAccountID id = new HederaAccountID();
-        a.send(id, 3);
+//        HederaAccount a = new HederaAccount();
+//        HederaAccountID id = new HederaAccountID();
+//        a.send(id, 3);
 
         return Response.ok().build();
     }
